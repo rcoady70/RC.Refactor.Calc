@@ -23,9 +23,12 @@
     {
         decimal Caculate(IFeeVariables feeParms);
     }
-
+    /// <summary>
+    /// UK calculator
+    /// </summary>
     public class UK : ICaculateFee<FeeVariables>
     {
+        public Dictionary<int, decimal> feeRules { get; set; } = new();
         public decimal Caculate(FeeVariables feeVariables)
         {
             if (feeVariables.revenue < 100000)
@@ -34,12 +37,19 @@
                 return 100.00M;
             if (feeVariables.membership == "X" && feeVariables.revenue > 100000)
                 return 200.00M;
-            if (feeVariables.membership == "X" && feeVariables.revenue > 100000 && feeVariables.membershipBand == "A")
+            if (feeVariables.membership == "X" && feeVariables.revenue < 100010 && feeVariables.membershipBand == "A")
                 return 300.00M;
-            //ETC... 
+            if (feeVariables.membership == "X" && feeVariables.revenue > 100000 && feeVariables.membershipBand == "B")
+                return 300.00M;
+            if (feeVariables.membership == "X" && feeVariables.revenue > 12100 && feeVariables.membershipBand == "F")
+                return 300.00M;
+            //Assuming up to 10 rules at least
             return 0;
         }
     }
+    /// <summary>
+    /// IE calculator
+    /// </summary>
     public class IE : ICaculateFee<FeeVariablesWithNewMember>
     {
         public decimal Caculate(FeeVariablesWithNewMember feeVariables)
